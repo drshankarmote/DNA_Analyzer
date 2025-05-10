@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Results</h2>
+
+<div class="dna-sequence">
+    <h3>Original Sequence:</h3>
+    <p>
+        {% for base in original_sequence %}
+            <span class="{{ base.lower() }}">{{ base }}</span>
+        {% endfor %}
+    </p>
+
+    <h3>Mutated Sequence:</h3>
+    <p>
+        {% for base in mutated_sequence %}
+            <span class="{{ base.lower() }}">{{ base }}</span>
+        {% endfor %}
+    </p> 
+
+{% if mutations %}
+    <h3>Detected Mutations:</h3>
+    <ul>
+        {% for m in mutations %}
+            {% if m.type == 'substitution' %}
+                <li>Substitution at position {{ m.position }}: {{ m.original_base }} → {{ m.mutated_base }}</li>
+            {% elif m.type == 'insertion' %}
+                <li>Insertion at position {{ m.position }}: +{{ m.inserted_base }}</li>
+            {% elif m.type == 'deletion' %}
+                <li>Deletion at position {{ m.position }}: -{{ m.deleted_base }}</li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+{% else %}
+    <h3>No mutations detected.</h3>
+{% endif %}
+
+    <h3>Mutations:</h3>
+    <ul>
+        {% for mutation in mutations %}
+            <li>Position {{ mutation.position }}: {{ mutation.original_base }} → {{ mutation.mutated_base }}</li>
+        {% endfor %}
+    </ul>
+
+    <h3>Codons and Amino Acids:</h3>
+    <ul>
+        {% for codon, amino_acid in codons_with_amino_acids %}
+            <li>Codon {{ codon }} → Amino Acid {{ amino_acid }}</li>
+        {% endfor %}
+    </ul>
+
+    <h3>Reverse Complement:</h3>
+    <p>
+        {% for base in reverse_complement %}
+            <span class="{{ base.lower() }}">{{ base }}</span>
+        {% endfor %}
+    </p>
+
+    <h3>Base Count:</h3>
+    <ul>
+        <li><span class="a">Adenine (A)</span>: {{ base_count['A'] }}</li>
+        <li><span class="t">Thymine (T)</span>: {{ base_count['T'] }}</li>
+        <li><span class="g">Guanine (G)</span>: {{ base_count['G'] }}</li>
+        <li><span class="c">Cytosine (C)</span>: {{ base_count['C'] }}</li>
+    </ul>
+
+    <h3>Base Count Graph:</h3>
+    <img src="data:image/png;base64,{{ graph_b64 }}" alt="Base Count Graph">
+    
+</div>
+
+<form action="{{ url_for('download_word') }}" method="POST">
+    <input type="hidden" name="original_sequence" value="{{ original_sequence }}">
+    <input type="hidden" name="mutated_sequence" value="{{ mutated_sequence }}">
+    <input type="hidden" name="mutations" value='{{ mutations | tojson }}'>
+    <input type="hidden" name="codons_with_amino_acids" value='{{ codons_with_amino_acids | tojson }}'>
+    <input type="hidden" name="reverse_complement" value="{{ reverse_complement }}">
+    <input type="hidden" name="base_count" value='{{ base_count | tojson }}'>
+    <button type="submit" class="btn">Download Report (Word)</button>
+</form>
+{% endblock %}

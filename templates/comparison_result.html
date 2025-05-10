@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>DNA Sequence Comparison Result</h2>
+
+<!-- DNA Sequences: Sequence 1 on top, Sequence 2 on bottom -->
+<div style="margin-bottom: 20px;">
+    <!-- Sequence 1 -->
+    <div style="margin-bottom: 20px;">
+        <p><strong>Sequence 1:</strong></p>
+        <pre style="background: #e6f7ff; padding: 10px; border: 1px solid #ccc; color: #000; white-space: pre-wrap; word-wrap: break-word;">{{ seq1 }}</pre>
+    </div>
+
+    <!-- Sequence 2 -->
+    <div>
+        <p><strong>Sequence 2:</strong></p>
+        <pre style="background: #e6f7ff; padding: 10px; border: 1px solid #ccc; color: #000; white-space: pre-wrap; word-wrap: break-word;">{{ seq2 }}</pre>
+    </div>
+</div>
+
+<!-- Comparison Summary -->
+<h3>Comparison Summary</h3>
+<p><strong>Matches:</strong> {{ match_count }}</p>
+<p><strong>Mismatches:</strong> {{ mismatch_count }}</p>
+<p><strong>Similarity Percentage:</strong> {{ similarity_percentage }}%</p>
+
+<!-- Button to toggle Detailed Comparison -->
+<h3>
+    <button onclick="toggleComparisonDetails()">Toggle Detailed Comparison</button>
+</h3>
+
+<!-- Detailed Comparison Table -->
+<div id="comparisonDetails" style="display: none; margin-top: 20px;">
+    <h3>Detailed Comparison</h3>
+    <table style="width: 100%; border-collapse: collapse;">
+        <thead>
+            <tr style="background: var(--header-footer-bg); color: var(--text-color);">
+                <th style="padding: 8px; border: 1px solid #555;">Position</th>
+                <th style="padding: 8px; border: 1px solid #555;">Base in Seq1</th>
+                <th style="padding: 8px; border: 1px solid #555;">Base in Seq2</th>
+                <th style="padding: 8px; border: 1px solid #555;">Result</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for item in comparison %}
+            <tr style="background-color: {% if item.result == '✔ Match' %}#00330033{% else %}#66000033{% endif %};">
+                <td style="padding: 6px; border: 1px solid #666;">{{ item.index }}</td>
+                <td style="padding: 6px; border: 1px solid #666;">{{ item.base1 }}</td>
+                <td style="padding: 6px; border: 1px solid #666;">{{ item.base2 }}</td>
+                <td style="padding: 6px; border: 1px solid #666;">{{ item.result }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Global Sequence Alignment Section -->
+{% if alignment_result %}
+<h3>Global Sequence Alignment</h3>
+<div style="background: #f9f9f9; padding: 10px; border: 1px solid #ccc; color: #000; white-space: pre-wrap; margin-top: 20px; border-radius: 5px;">
+    <pre>{{ alignment_result }}</pre>
+</div>
+
+<!-- Alignment Score -->
+<p style="margin-top: 10px;"><strong>Alignment Score:</strong> {{ alignment_score if alignment_score else "Not available" }}</p>
+{% endif %}
+
+<!-- Back to Home Button -->
+<br>
+<a href="{{ url_for('index') }}" class="btn" style="color: #ccc;">← Back to Home</a>
+
+<script>
+function toggleComparisonDetails() {
+    var details = document.getElementById('comparisonDetails');
+    if (details.style.display === "none") {
+        details.style.display = "block";
+    } else {
+        details.style.display = "none";
+    }
+}
+</script>
+
+{% endblock %}

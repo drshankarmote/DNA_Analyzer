@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 style="color: rgb(240, 228, 228);">Welcome to the DNA Analyzer</h2>
+<p>Analyze your DNA sequences easily. Upload, View, and Download Reports.</p>
+
+<a href="{{ url_for('upload') }}">
+    <button>Upload DNA File</button>
+</a>
+
+<hr style="margin: 25px 0;">
+
+<!-- 🚀 Upcoming Features Section -->
+<div class="upcoming-features">
+    <h2 style="color: aliceblue;">🚀 Upcoming Features</h2>
+    <ul>
+        <li>🔬 Mutation Detection <strong>(Coming Soon)</strong></li>
+        <li>🧬 Species and Ancestry Matching <strong>(Coming Soon)</strong></li>
+    </ul>
+</div>
+{% endblock %}

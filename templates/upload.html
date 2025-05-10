@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Upload DNA File</h2>
+<form action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data">
+    <input type="file" name="file" id="fileInput" required accept=".txt, .fasta, .fa">
+    <button type="submit">Analyze</button>
+</form>
+
+<hr style="margin: 20px 0; border: 3px solid var(--primary-color);">
+
+<h2>Compare Two DNA Sequences</h2>
+<form action="{{ url_for('compare_sequences') }}" method="POST" enctype="multipart/form-data">
+    <label for="seq1">Sequence 1:</label><br>
+    <textarea id="seq1" name="seq1" rows="5" cols="60" style="word-wrap: break-word;" required placeholder="Enter or upload first DNA sequence..."></textarea><br>
+    <input type="file" accept=".txt, .fasta, .fa" onchange="loadFileToTextarea(this, 'seq1')"><br><br>
+
+    <label for="seq2">Sequence 2:</label><br>
+    <textarea id="seq2" name="seq2" rows="5" cols="60" style="word-wrap: break-word;" required placeholder="Enter or upload second DNA sequence..."></textarea><br>
+    <input type="file" accept=".txt, .fasta, .fa" onchange="loadFileToTextarea(this, 'seq2')"><br><br>
+
+    <button type="submit">Compare Sequences</button>
+</form>
+
+<script>
+function loadFileToTextarea(input, textareaId) {
+    const file = input.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const content = e.target.result.trim();
+
+        // Process the file content to extract sequence
+        let sequence = content;
+
+        // Handle .txt and .fasta file formats
+        if (file.name.endsWith('.fasta') || file.name.endsWith('.fa')) {
+            // Fasta format processing: Remove the header (anything starting with '>')
+            sequence = content.split('\n').filter(line => !line.startsWith('>')).join('');
+        } else if (file.name.endsWith('.txt')) {
+            // Plain text file
+            sequence = content.replace(/\s/g, '');  // Remove all whitespace
+        }
+
+        // Clean the sequence: Ensure it's just A, T, G, C (no other characters allowed)
+        sequence = sequence.replace(/[^ATGC]/g, '').toUpperCase();
+
+        // Set the sequence value in the respective textarea
+        document.getElementById(textareaId).value = sequence;
+    };
+    reader.readAsText(file);
+}
+</script>
+{% endblock %}

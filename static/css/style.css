@@ -1,0 +1,242 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+/* Basic Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Root Variables */
+:root {
+    --background-color: #1668a6; /* Teal, commonly associated with biotech */
+    --text-color: #ffffff;
+    --primary-color: #0079bf; /* Bright, techy color */
+    --secondary-color: #efecea;
+    --header-footer-bg: #00000075;
+    --accent-color: #127891; /* Soft green accent */
+}
+
+/* Dark Theme Variables */
+body.dark-theme {
+    --background-color: #056fbac4;
+    --text-color: #f9f9f9;
+    --primary-color: #00a6bf;
+    --secondary-color: #fdfdfd;
+    --header-footer-bg: #06091fb5;
+}
+
+/* Reset & Base Styles */
+html, body {
+    height: 100%;
+    scroll-padding-top: 100px;
+}
+
+/* Body Styling */
+body {
+    display: flex;
+    flex-direction: column;
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--background-color) url('images/background.jpg') no-repeat center center fixed;
+    background-size: cover;
+    background-blend-mode: overlay;
+    color: var(--text-color);
+    font-size: 16px;
+    transition: background-color 0.3s, color 0.3s, background-image 0.5s ease;
+    line-height: 1.6;
+    letter-spacing: 0.3px;
+    text-align: justify;
+    min-height: 100vh;
+}
+
+/* Header */
+header {
+    background: var(--header-footer-bg);
+    padding: 3px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Subtle shadow for elevation */
+    animation: fadeIn 1s ease;
+}
+
+header h1 {
+    font-size: 18px; /* Slightly larger font size for the header */
+    font-weight: 650;
+    letter-spacing: 2px;
+    color: white(--primary-color);
+}
+
+/* Navigation */
+nav a {
+    margin: 0 15px;
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 500;
+    position: relative;
+    transition: 0.3s;
+}
+
+nav a:hover {
+    color: var(--primary-color);
+}
+
+nav a::after {
+    content: '';
+    position: absolute;
+    width: 0%;
+    height: 2px;
+    bottom: -4px;
+    left: 0;
+    background-color: var(--primary-color);
+    transition: 0.3s;
+}
+
+nav a:hover::after {
+    width: 100%;
+}
+
+/* Container */
+main.container {
+    flex: 1;
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+    padding: 30px;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(4px);
+    border-radius: 16px;
+    box-shadow: 0 6px 40px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    animation: fadeIn 1s ease;
+    transition: all 0.3s ease-in-out;
+}
+.container h2 {
+    font-size: 20px;
+    align-content: normal;
+    margin-bottom: 5px;
+    color: white(--primary-color);
+}
+
+/* Footer */
+footer {
+    background: var(--header-footer-bg);
+    color: var(--text-color);
+    text-align: center;
+    padding: 25px;
+    font-size: 14px;
+    width: 100%;
+    margin-top: auto;
+    animation: fadeIn 1s ease;
+}
+
+footer p {
+    color: var(--secondary-color);
+    margin-top: 10px;
+}
+
+button:hover, .btn:hover {
+    background: linear-gradient(to right, #45a049, #28a745);
+    transform: scale(1.05);
+}
+
+/* DNA Base Coloring */
+span.a { color: #f60000; } /* Red for A */
+span.t { color: #ff0a84; } /* Blue for T */
+span.g { color: #0bfa63; } /* Green for G */
+span.c { color: #ffcc00; } /* Yellow for C */
+
+/* Optional: Tooltip on hover */
+span.a:hover::after,
+span.t:hover::after,
+span.g:hover::after,
+span.c:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    background: #000000cc;
+    color: #fff;
+    padding: 6px 10px;
+    font-size: 14px;
+    border-radius: 5px;
+    white-space: nowrap;
+    transform: translateY(-120%);
+    left: 0;
+}
+
+/* Toggle Switch for Dark Mode (optional) */
+.toggle-switch {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    cursor: pointer;
+    color: var(--text-color);
+    margin-top: 8px;
+}
+
+.toggle-switch input[type="checkbox"] {
+    width: 45px;
+    height: 25px;
+    appearance: none;
+    background: #ccc;
+    border-radius: 25px;
+    position: relative;
+    transition: background 0.3s;
+}
+
+.toggle-switch input[type="checkbox"]::before {
+    content: '';
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    top: 2px;
+    left: 2px;
+    background: white;
+    transition: transform 0.3s;
+}
+
+.toggle-switch input[type="checkbox"]:checked {
+    background: var(--primary-color);
+}
+
+.toggle-switch input[type="checkbox"]:checked::before {
+    transform: translateX(20px);
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    body {
+        font-size: 14px;
+    }
+    
+    .container {
+        padding: 20px;
+        margin: 20px;
+    }
+
+    nav a {
+        margin: 0 8px;
+    }
+
+    header h1 {
+        font-size: 24px;
+    }
+    
+    footer {
+        font-size: 14px;
+    }
+    
+    .toggle-switch {
+        gap: 8px;
+    }
+    
+}
