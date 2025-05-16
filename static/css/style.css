@@ -1,48 +1,99 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
 
-/* Basic Reset */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+@keyframes pulse {
+    0%, 100% { text-shadow: 0 0 5px currentColor; }
+    50% { text-shadow: 0 0 15px currentColor; }
 }
 
-/* Root Variables */
+span.a, span.t, span.g, span.c {
+    animation: pulse 2s infinite;
+}
+
+button, .btn {
+    background: transparent;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 5px var(--primary-color);
+}
+
+button:hover, .btn:hover {
+    background: var(--primary-color);
+    color: #fff;
+    box-shadow: 0 0 20px var(--primary-color);
+    transform: scale(1.05);
+}
+
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* DNA Base Coloring */
+span.a { color: #f60000; }
+span.t { color: #ff0a84; }
+span.g { color: #0bfa63; }
+span.c { color: #ffcc00; }
+
+span.a:hover::after,
+span.t:hover::after,
+span.g:hover::after,
+span.c:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    background: #000000cc;
+    color: #fff;
+    padding: 6px 10px;
+    font-size: 14px;
+    border-radius: 5px;
+    white-space: nowrap;
+    transform: translateY(-120%);
+    left: 0;
+}
+
+/* Root Variables — Light Mode (default) */
 :root {
-    --background-color: #1668a6; /* Teal, commonly associated with biotech */
-    --text-color: #ffffff;
-    --primary-color: #0079bf; /* Bright, techy color */
-    --secondary-color: #efecea;
-    --header-footer-bg: #00000075;
-    --accent-color: #127891; /* Soft green accent */
+    --background-color: #ffffff;
+    --text-color: #1e1e1e;
+    --primary-color: #0077cc;
+    --secondary-color: #4a4a4a;
+    --header-footer-bg: #f1f1f1;
+    --accent-color: #6699cc;
 }
 
 /* Dark Theme Variables */
 body.dark-theme {
-    --background-color: #056fbac4;
+    --background-color: #0f2b40;
     --text-color: #f9f9f9;
     --primary-color: #00a6bf;
-    --secondary-color: #fdfdfd;
-    --header-footer-bg: #06091fb5;
+    --secondary-color: #cccccc;
+    --header-footer-bg: #061f30;
+    --accent-color: #127891;
 }
 
-/* Reset & Base Styles */
+/* Glow effect using current colors */
+.glow {
+    text-shadow: 0 0 5px var(--primary-color), 0 0 10px var(--primary-color), 0 0 20px var(--accent-color);
+}
+
 html, body {
     height: 100%;
     scroll-padding-top: 100px;
 }
 
-/* Body Styling */
 body {
     display: flex;
     flex-direction: column;
     font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: var(--background-color) url('images/background.jpg') no-repeat center center fixed;
-    background-size: cover;
-    background-blend-mode: overlay;
+    background: var(--background-color);
     color: var(--text-color);
     font-size: 16px;
-    transition: background-color 0.3s, color 0.3s, background-image 0.5s ease;
+    transition: background-color 0.3s, color 0.3s;
     line-height: 1.6;
     letter-spacing: 0.3px;
     text-align: justify;
@@ -52,27 +103,38 @@ body {
 /* Header */
 header {
     background: var(--header-footer-bg);
-    padding: 3px 15px;
+    padding: 10px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     position: sticky;
     top: 0;
     z-index: 100;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Subtle shadow for elevation */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     animation: fadeIn 1s ease;
 }
 
 header h1 {
-    font-size: 18px; /* Slightly larger font size for the header */
+    font-size: 20px;
     font-weight: 650;
     letter-spacing: 2px;
-    color: white(--primary-color);
+    color: var(--primary-color);
 }
 
-/* Navigation */
+/* Navigation and toggle wrapper */
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.nav-right nav {
+    display: flex;
+    gap: 15px;
+}
+
+/* Navigation Links */
 nav a {
-    margin: 0 15px;
     text-decoration: none;
     color: var(--text-color);
     font-weight: 500;
@@ -106,19 +168,25 @@ main.container {
     max-width: 1200px;
     margin: auto;
     padding: 30px;
-    background: rgba(0, 0, 0, 0.55);
+    background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(4px);
     border-radius: 16px;
-    box-shadow: 0 6px 40px rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 6px 40px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.05);
     animation: fadeIn 1s ease;
     transition: all 0.3s ease-in-out;
 }
+
+body.dark-theme main.container {
+    background: rgba(0, 0, 0, 0.55);
+    box-shadow: 0 6px 40px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
 .container h2 {
     font-size: 20px;
-    align-content: normal;
-    margin-bottom: 5px;
-    color: white(--primary-color);
+    margin-bottom: 10px;
+    color: var(--primary-color);
 }
 
 /* Footer */
@@ -138,35 +206,7 @@ footer p {
     margin-top: 10px;
 }
 
-button:hover, .btn:hover {
-    background: linear-gradient(to right, #45a049, #28a745);
-    transform: scale(1.05);
-}
-
-/* DNA Base Coloring */
-span.a { color: #f60000; } /* Red for A */
-span.t { color: #ff0a84; } /* Blue for T */
-span.g { color: #0bfa63; } /* Green for G */
-span.c { color: #ffcc00; } /* Yellow for C */
-
-/* Optional: Tooltip on hover */
-span.a:hover::after,
-span.t:hover::after,
-span.g:hover::after,
-span.c:hover::after {
-    content: attr(data-tooltip);
-    position: absolute;
-    background: #000000cc;
-    color: #fff;
-    padding: 6px 10px;
-    font-size: 14px;
-    border-radius: 5px;
-    white-space: nowrap;
-    transform: translateY(-120%);
-    left: 0;
-}
-
-/* Toggle Switch for Dark Mode (optional) */
+/* Toggle Switch */
 .toggle-switch {
     display: flex;
     align-items: center;
@@ -176,34 +216,62 @@ span.c:hover::after {
     margin-top: 8px;
 }
 
-.toggle-switch input[type="checkbox"] {
-    width: 45px;
-    height: 25px;
-    appearance: none;
-    background: #ccc;
-    border-radius: 25px;
+/* Toggle container */
+.switch {
     position: relative;
-    transition: background 0.3s;
+    display: inline-block;
+    width: 50px;
+    height: 26px;
 }
 
-.toggle-switch input[type="checkbox"]::before {
-    content: '';
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* Slider base */
+.slider {
     position: absolute;
-    width: 22px;
+    cursor: pointer;
+    top: 0; left: 0;
+    right: 0; bottom: 0;
+    background-color: #ccc;
+    border-radius: 34px;
+    transition: background-color 0.3s;
+}
+
+.slider::before {
+    position: absolute;
+    content: "";
     height: 22px;
-    border-radius: 50%;
-    top: 2px;
+    width: 22px;
     left: 2px;
-    background: white;
+    bottom: 2px;
+    background-color: white;
+    border-radius: 50%;
     transition: transform 0.3s;
 }
 
-.toggle-switch input[type="checkbox"]:checked {
-    background: var(--primary-color);
+input:checked + .slider {
+    background-color: var(--primary-color);
 }
 
-.toggle-switch input[type="checkbox"]:checked::before {
-    transform: translateX(20px);
+input:checked + .slider::before {
+    transform: translateX(24px);
+}
+
+/* Emoji inside switch */
+.slider .icon {
+    position: absolute;
+    top: 2px;
+    left: 5px;
+    font-size: 18px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+input:checked + .slider .icon {
+    transform: translateX(22px);
 }
 
 /* Animation */
@@ -217,10 +285,16 @@ span.c:hover::after {
     body {
         font-size: 14px;
     }
-    
+
     .container {
         padding: 20px;
         margin: 20px;
+    }
+
+    .nav-right {
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 10px;
     }
 
     nav a {
@@ -230,13 +304,12 @@ span.c:hover::after {
     header h1 {
         font-size: 24px;
     }
-    
+
     footer {
         font-size: 14px;
     }
-    
+
     .toggle-switch {
         gap: 8px;
     }
-    
 }
